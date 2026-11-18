@@ -7,3 +7,13 @@ out
 .vercel
 *.log
 .DS_Store
+
+# Archivos temporales y de pruebas
+/archivo.csv
+/archivo1.csv
+/archivo1.txt
+*.zip
+tsconfig.tsbuildinfo
+
+# Supabase temporary config
+supabase/.temp/

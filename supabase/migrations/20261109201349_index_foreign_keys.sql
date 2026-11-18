@@ -1,0 +1,12 @@
+create index if not exists workspaces_created_by_idx on public.workspaces(created_by);
+create index if not exists contacts_created_by_idx on public.contacts(created_by);
+create index if not exists opportunities_contact_workspace_idx on public.opportunities(contact_id, workspace_id);
+create index if not exists opportunities_created_by_idx on public.opportunities(created_by);
+create index if not exists opportunities_owner_id_idx on public.opportunities(owner_id);
+create index if not exists activities_contact_workspace_idx on public.activities(contact_id, workspace_id);
+create index if not exists activities_opportunity_workspace_idx on public.activities(opportunity_id, workspace_id);
+create index if not exists activities_created_by_idx on public.activities(created_by);
+create index if not exists tasks_assigned_to_idx on public.tasks(assigned_to);
+create index if not exists tasks_contact_workspace_idx on public.tasks(contact_id, workspace_id);
+create index if not exists tasks_opportunity_workspace_idx on public.tasks(opportunity_id, workspace_id);
+create index if not exists tasks_created_by_idx on public.tasks(created_by);
