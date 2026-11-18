@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { demoOpportunities, stageLabels } from "@/lib/domain";
 
 const euro = new Intl.NumberFormat("es-ES", {
@@ -38,6 +39,13 @@ export default function HomePage() {
           <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
             Prototipo · sin datos reales
           </span>
+          <Link
+            href="/login"
+            className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-8 py-4 text-base font-bold text-white shadow-md transition hover:bg-blue-800 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            ACCEDER A NEXO AI
+            <span className="ml-3 text-xl" aria-hidden="true">→</span>
+          </Link>
         </header>
 
         <div className="grid gap-4 sm:grid-cols-3">
