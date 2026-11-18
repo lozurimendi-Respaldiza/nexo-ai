@@ -95,6 +95,10 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      reset_workspace_data: {
+        Args: { p_workspace_id: string };
+        Returns: string;
+      };
       create_workspace_for_current_user: {
         Args: { workspace_name: string };
         Returns: string;

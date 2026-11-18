@@ -72,6 +72,11 @@ export default async function DashboardPage() {
               <p className="mt-2 text-sm text-slate-400">Invita usuarios, administra roles y controla el acceso al espacio de trabajo.</p>
               <p className="mt-4 text-sm font-medium text-cyan-300">Gestionar miembros →</p>
             </Link>}
+            {role === "owner" && <Link href="/settings/reset" className="rounded-xl border border-rose-900/70 bg-rose-950/20 p-5 transition hover:border-rose-700">
+              <h3 className="font-semibold">Restablecer espacio de trabajo</h3>
+              <p className="mt-2 text-sm text-slate-400">Elimina los datos comerciales del espacio y permite empezar de cero. Conserva usuarios, roles y espacio de trabajo.</p>
+              <p className="mt-4 text-sm font-medium text-rose-300">Configurar restablecimiento →</p>
+            </Link>}
             <Link href="/nba-analytics" className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 transition hover:border-cyan-700">
               <h3 className="font-semibold">Resultados NBA</h3>
               <p className="mt-2 text-sm text-slate-400">Mide recomendaciones registradas, ejecución y oportunidades vinculadas ganadas.</p>
