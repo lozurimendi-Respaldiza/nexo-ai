@@ -1,6 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getWorkspaceContext } from "@/lib/workspace-context";
@@ -15,6 +14,31 @@ function go(params: { success?: string; error?: string }): never {
 
 function normalizeEmail(value: string) {
   return value.trim().toLowerCase();
+}
+function getConfiguredAppOrigin(): string | null {
+  const configuredUrl = process.env.APP_URL?.trim();
+
+  if (!configuredUrl) return null;
+
+  try {
+    const url = new URL(configuredUrl);
+    const isLocalhost =
+      url.hostname === "localhost" ||
+      url.hostname === "127.0.0.1";
+
+    if (
+      url.protocol !== "https:" &&
+      !(url.protocol === "http:" && isLocalhost)
+    ) {
+      return null;
+    }
+
+    if (url.username || url.password) return null;
+
+    return url.origin;
+  } catch {
+    return null;
+  }
 }
 
 export type InviteActionState = {
@@ -156,7 +180,15 @@ if (existingUser.email_confirmed_at) {
     // Una cuenta existente pero todavÃ­a no verificada se vuelve a invitar
     // mediante un nuevo token de Auth, asociado a esta invitaciÃ³n pendiente.
   }
+  const appOrigin = getConfiguredAppOrigin();
 
+  if (!appOrigin) {
+    return {
+      status: "error",
+      message:
+        "Falta configurar APP_URL con la URL pública de la aplicación en el servidor.",
+    };
+  }
   const { data: invitation, error: invitationError } = await admin
     .from("workspace_invitations")
     .insert({
@@ -173,11 +205,7 @@ if (existingUser.email_confirmed_at) {
     return { status: "error", message: "No se pudo preparar la invitaciÃ³n. Comprueba que has ejecutado el SQL de instalaciÃ³n." };
   }
 
-  const headerStore = await headers();
-  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
-  const protocol = headerStore.get("x-forwarded-proto") ?? (host?.startsWith("localhost") || host?.startsWith("127.0.0.1") ? "http" : "https");
-  const origin = host ? `${protocol}://${host}` : "http://localhost:3000";
-  const redirectTo = `${origin}/auth/confirm`;
+  const redirectTo = `${appOrigin}/auth/confirm`;
 
   const { data: generatedLink, error: generateError } = await admin.auth.admin.generateLink({
     type: "invite",
@@ -193,7 +221,7 @@ if (existingUser.email_confirmed_at) {
     return { status: "error", message: `No se pudo generar el enlace: ${generateError?.message ?? "respuesta incompleta de Supabase"}` };
   }
 
-  const inviteUrl = new URL("/auth/confirm", origin);
+  const inviteUrl = new URL("/auth/confirm", appOrigin);
   inviteUrl.searchParams.set("token_hash", tokenHash);
   inviteUrl.searchParams.set("type", "invite");
   inviteUrl.searchParams.set("invitation_id", invitation.id);
