@@ -59,10 +59,10 @@ export async function inviteMemberAction(
   const email = normalizeEmail(String(formData.get("email") ?? ""));
   const requestedRole = String(formData.get("role") ?? "member");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { status: "error", message: "Introduce una direcciÃ³n de correo vÃ¡lida." };
+    return { status: "error", message: "Introduce una dirección de correo válida." };
   }
   if (requestedRole !== "member" && requestedRole !== "admin") {
-    return { status: "error", message: "El rol seleccionado no es vÃ¡lido." };
+    return { status: "error", message: "El rol seleccionado no es válido." };
   }
   if (role === "admin" && requestedRole !== "member") {
     return { status: "error", message: "Los administradores solo pueden incorporar miembros." };
@@ -82,7 +82,7 @@ export async function inviteMemberAction(
     .eq("user_id", user.id)
     .maybeSingle();
   if (actorError || !actorMembership || (actorMembership.role !== "owner" && actorMembership.role !== "admin")) {
-    return { status: "error", message: "Tu permiso de gestiÃ³n ha cambiado. Actualiza la pÃ¡gina e intÃ©ntalo de nuevo." };
+    return { status: "error", message: "Tu permiso de gestión ha cambiado. Actualiza la página e inténtalo de nuevo." };
   }
   if (actorMembership.role === "admin" && requestedRole !== "member") {
     return { status: "error", message: "Los administradores solo pueden incorporar miembros." };
@@ -95,20 +95,20 @@ export async function inviteMemberAction(
     .eq("email", email)
     .eq("status", "pending");
   if (pendingInvitesError) {
-    return { status: "error", message: "No se pudo comprobar si ya existe una invitaciÃ³n pendiente." };
+    return { status: "error", message: "No se pudo comprobar si ya existe una invitación pendiente." };
   }
 
   const now = Date.now();
   for (const pendingInvite of pendingInvites ?? []) {
     if (new Date(pendingInvite.expires_at).getTime() > now) {
-      return { status: "error", message: "Ya existe una invitaciÃ³n pendiente para este correo." };
+      return { status: "error", message: "Ya existe una invitación pendiente para este correo." };
     }
     const { error: expireError } = await admin
       .from("workspace_invitations")
       .update({ status: "expired" })
       .eq("id", pendingInvite.id);
     if (expireError) {
-      return { status: "error", message: "No se pudo cerrar una invitaciÃ³n caducada. IntÃ©ntalo de nuevo." };
+      return { status: "error", message: "No se pudo cerrar una invitación caducada. Inténtalo de nuevo." };
     }
   }
 
@@ -128,7 +128,7 @@ export async function inviteMemberAction(
       return { status: "error", message: "Esta cuenta ya pertenece a este espacio de trabajo." };
     }
     if (memberships && memberships.length > 0) {
-      return { status: "error", message: "Esta cuenta ya pertenece a otro espacio. La selecciÃ³n entre varios espacios todavÃ­a no estÃ¡ disponible." };
+      return { status: "error", message: "Esta cuenta ya pertenece a otro espacio. La selección entre varios espacios todavía no está disponible." };
     }
 
 
@@ -145,7 +145,7 @@ if (existingUser.email_confirmed_at) {
   if (rpcError) {
     return {
       status: "error",
-      message: "No se pudo incorporar al usuario. Comprueba los permisos y la configuraciÃ³n de Supabase.",
+      message: "No se pudo incorporar al usuario. Comprueba los permisos y la configuración de Supabase.",
     };
   }
 
@@ -153,13 +153,13 @@ if (existingUser.email_confirmed_at) {
     const messages: Record<string, string> = {
       already_member: "Esta cuenta ya pertenece a este espacio de trabajo.",
       already_in_other_workspace: "Esta cuenta ya pertenece a otro espacio de trabajo.",
-      actor_not_authorized: "Tu permiso de gestiÃ³n ha cambiado. Actualiza la pÃ¡gina.",
+      actor_not_authorized: "Tu permiso de gestión ha cambiado. Actualiza la página.",
       admin_cannot_add_admin: "Los administradores solo pueden incorporar miembros.",
-      target_not_found_or_unconfirmed: "La cuenta no existe o todavÃ­a no tiene el correo confirmado.",
-      invalid_role: "El rol seleccionado no es vÃ¡lido.",
+      target_not_found_or_unconfirmed: "La cuenta no existe o todavía no tiene el correo confirmado.",
+      invalid_role: "El rol seleccionado no es válido.",
       cannot_add_self: "No puedes incorporarte a ti mismo.",
-      invalid_parameters: "Los datos enviados no son vÃ¡lidos.",
-      unauthenticated: "Tu sesiÃ³n ha caducado. Inicia sesiÃ³n de nuevo.",
+      invalid_parameters: "Los datos enviados no son válidos.",
+      unauthenticated: "Tu sesión ha caducado. Inicia sesión de nuevo.",
     };
 
     return {
@@ -173,12 +173,12 @@ if (existingUser.email_confirmed_at) {
 
   return {
     status: "success",
-    message: "La cuenta existente se ha incorporado al espacio. Ya puede iniciar sesiÃ³n.",
+    message: "La cuenta existente se ha incorporado al espacio. Ya puede iniciar sesión.",
   };
 }
 
-    // Una cuenta existente pero todavÃ­a no verificada se vuelve a invitar
-    // mediante un nuevo token de Auth, asociado a esta invitaciÃ³n pendiente.
+    // Una cuenta existente pero todavía no verificada se vuelve a invitar
+    // mediante un nuevo token de Auth, asociado a esta invitación pendiente.
   }
   const appOrigin = getConfiguredAppOrigin();
 
@@ -202,7 +202,7 @@ if (existingUser.email_confirmed_at) {
     .select("id")
     .single();
   if (invitationError || !invitation) {
-    return { status: "error", message: "No se pudo preparar la invitaciÃ³n. Comprueba que has ejecutado el SQL de instalaciÃ³n." };
+    return { status: "error", message: "No se pudo preparar la invitación. Comprueba que has ejecutado el SQL de instalación." };
   }
 
   const redirectTo = `${appOrigin}/auth/confirm`;
@@ -229,7 +229,7 @@ if (existingUser.email_confirmed_at) {
   revalidatePath("/settings/members");
   return {
     status: "success",
-    message: "Enlace de invitaciÃ³n generado. CÃ³pialo y envÃ­aselo al destinatario; solo puede utilizarse una vez y caduca en una hora.",
+    message: "Enlace de invitación generado. Cópialo y envíaselo al destinatario; solo puede utilizarse una vez y caduca en una hora.",
     inviteUrl: inviteUrl.toString(),
   };
 }
@@ -241,7 +241,7 @@ export async function changeMemberRoleAction(formData: FormData) {
   const targetUserId = String(formData.get("user_id") ?? "");
   const nextRole = String(formData.get("role") ?? "");
   if (!targetUserId || targetUserId === user.id) go({ error: "No puedes modificar tu propio rol." });
-  if (nextRole !== "admin" && nextRole !== "member") go({ error: "El rol seleccionado no es vÃ¡lido." });
+  if (nextRole !== "admin" && nextRole !== "member") go({ error: "El rol seleccionado no es válido." });
 
   const { data: target, error: targetError } = await supabase
     .from("workspace_members")
@@ -295,7 +295,7 @@ export async function cancelInvitationAction(formData: FormData) {
   if (role !== "owner" && role !== "admin") go({ error: "No tienes permisos para cancelar invitaciones." });
 
   const invitationId = String(formData.get("invitation_id") ?? "");
-  if (!invitationId) go({ error: "No se ha indicado la invitaciÃ³n." });
+  if (!invitationId) go({ error: "No se ha indicado la invitación." });
 
   let admin: ReturnType<typeof getSupabaseAdminClient>;
   try {
@@ -311,7 +311,7 @@ export async function cancelInvitationAction(formData: FormData) {
     .eq("user_id", user.id)
     .maybeSingle();
   if (actorError || !actorMembership || (actorMembership.role !== "owner" && actorMembership.role !== "admin")) {
-    go({ error: "Tu permiso de gestiÃ³n ha cambiado. Actualiza la pÃ¡gina e intÃ©ntalo de nuevo." });
+    go({ error: "Tu permiso de gestión ha cambiado. Actualiza la página e inténtalo de nuevo." });
   }
 
   const { data: invitation, error: readError } = await admin
@@ -321,7 +321,7 @@ export async function cancelInvitationAction(formData: FormData) {
     .eq("workspace_id", workspaceId)
     .eq("status", "pending")
     .maybeSingle();
-  if (readError || !invitation) go({ error: "La invitaciÃ³n ya no estÃ¡ pendiente o no existe." });
+  if (readError || !invitation) go({ error: "La invitación ya no está pendiente o no existe." });
   if (actorMembership.role === "admin" && invitation.role !== "member") go({ error: "Los administradores solo pueden cancelar invitaciones de miembros." });
 
   const { error } = await admin
@@ -329,8 +329,8 @@ export async function cancelInvitationAction(formData: FormData) {
     .update({ status: "revoked" })
     .eq("id", invitationId)
     .eq("workspace_id", workspaceId);
-  if (error) go({ error: "No se pudo cancelar la invitaciÃ³n." });
+  if (error) go({ error: "No se pudo cancelar la invitación." });
 
   revalidatePath("/settings/members");
-  go({ success: "InvitaciÃ³n cancelada." });
+  go({ success: "Invitación cancelada." });
 }
