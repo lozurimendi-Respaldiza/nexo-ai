@@ -44,6 +44,12 @@ export default async function DashboardPage() {
       accent: true,
     },
     {
+      href: "/nba-analytics",
+      title: "Resultados NBA",
+      description: "Mide recomendaciones registradas, ejecución y oportunidades vinculadas ganadas.",
+      action: "Consultar resultados",
+    },
+    {
       href: "/activity",
       title: "Historial de actividad",
       description: "Consulta llamadas, emails, reuniones, notas y cambios de etapa, incluidos los registros históricos.",
@@ -66,12 +72,6 @@ export default async function DashboardPage() {
           danger: true,
         }]
       : []),
-    {
-      href: "/nba-analytics",
-      title: "Resultados NBA",
-      description: "Mide recomendaciones registradas, ejecución y oportunidades vinculadas ganadas.",
-      action: "Consultar resultados",
-    },
   ];
 
   return (
