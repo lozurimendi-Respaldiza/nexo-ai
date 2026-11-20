@@ -1,5 +1,5 @@
 
-// Generado a partir del esquema público del proyecto Supabase NEXO AI.
+// Generado a partir del esquema pÃºblico del proyecto Supabase NEXO AI.
 // Proyecto: tzggnlbpyuqfrukbpwuk | PostgREST 14.18
 
 export type Json =
@@ -82,7 +82,34 @@ export type Database = {
         { assigned_to?: string | null; completed_at?: string | null; contact_id?: string | null; created_at?: string; created_by: string; description?: string | null; due_at?: string | null; id?: string; opportunity_id?: string | null; priority?: string; status?: string; title: string; updated_at?: string; value?: number; workspace_id: string },
         { assigned_to?: string | null; completed_at?: string | null; contact_id?: string | null; created_by?: string; description?: string | null; due_at?: string | null; id?: string; opportunity_id?: string | null; priority?: string; status?: string; title?: string; updated_at?: string; workspace_id?: string }
       >;
-      workspace_invitations: Table<
+      calendar_events: Table<
+        { id: string; workspace_id: string; title: string; description: string | null; starts_at: string; ends_at: string; contact_id: string | null; opportunity_id: string | null; created_by: string; created_at: string; updated_at: string },
+        { id?: string; workspace_id: string; title: string; description?: string | null; starts_at: string; ends_at: string; contact_id?: string | null; opportunity_id?: string | null; created_by: string; created_at?: string; updated_at?: string },
+        { id?: string; workspace_id?: string; title?: string; description?: string | null; starts_at?: string; ends_at?: string; contact_id?: string | null; opportunity_id?: string | null; created_by?: string; created_at?: string; updated_at?: string },
+        [
+          {
+            foreignKeyName: "calendar_events_contact_workspace_fk";
+            columns: ["contact_id", "workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts";
+            referencedColumns: ["id", "workspace_id"];
+          },
+          {
+            foreignKeyName: "calendar_events_opportunity_workspace_fk";
+            columns: ["opportunity_id", "workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities";
+            referencedColumns: ["id", "workspace_id"];
+          },
+          {
+            foreignKeyName: "calendar_events_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          }
+        ]
+      >;      workspace_invitations: Table<
         { id: string; workspace_id: string; email: string; role: string; invited_by: string; status: string; expires_at: string; accepted_at: string | null; accepted_user_id: string | null; created_at: string },
         { id?: string; workspace_id: string; email: string; role: string; invited_by: string; status?: string; expires_at: string; accepted_at?: string | null; accepted_user_id?: string | null; created_at?: string },
         { id?: string; workspace_id?: string; email?: string; role?: string; invited_by?: string; status?: string; expires_at?: string; accepted_at?: string | null; accepted_user_id?: string | null; created_at?: string }
@@ -127,7 +154,6 @@ export type Database = {
     CompositeTypes: Record<string, never>;
   };
 };
-
 export type Tables<
   Name extends keyof Database["public"]["Tables"]
 > = Database["public"]["Tables"][Name]["Row"];

@@ -1,3 +1,7 @@
+import {
+  LocalDate,
+  LocalDateTime,
+} from "@/components/local-date-time";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getWorkspaceContext } from "@/lib/workspace-context";
@@ -95,7 +99,10 @@ export default async function MembersSettingsPage({ searchParams }: { searchPara
                 <article key={member.user_id} className="flex flex-col gap-3 border-b border-slate-800 bg-slate-900/60 p-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <p className="truncate font-medium">{account?.email ?? `Usuario ${member.user_id.slice(0, 8)}…`}{isSelf ? " (tú)" : ""}</p>
-                    <p className="mt-1 text-xs text-slate-500">Alta: {new Date(member.created_at).toLocaleDateString("es-ES")} · {roleLabel[member.role] ?? "Miembro"}</p>
+                    <p className="mt-1 text-xs text-slate-500">
+  Alta: <LocalDate value={member.created_at} /> ·{" "}
+  {roleLabel[member.role] ?? "Miembro"}
+</p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     {canEditRole && (
@@ -134,7 +141,10 @@ export default async function MembersSettingsPage({ searchParams }: { searchPara
               <article key={invitation.id} className="flex flex-col gap-3 border-b border-slate-800 bg-slate-900/60 p-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium">{invitation.email}</p>
-                  <p className="mt-1 text-xs text-slate-500">{roleLabel[invitation.role] ?? "Miembro"} · Caduca: {new Date(invitation.expires_at).toLocaleString("es-ES")}</p>
+                  <p className="mt-1 text-xs text-slate-500">
+  {roleLabel[invitation.role] ?? "Miembro"} · Caduca:{" "}
+  <LocalDateTime value={invitation.expires_at} />
+</p>
                 </div>
                 {(role === "owner" || invitation.role === "member") && (
                   <form action={cancelInvitationAction}>

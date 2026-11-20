@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 import { deleteOpportunityAction, updateOpportunityAction } from "../actions";
 import { ConfirmDeleteButton } from "../confirm-delete-button";
+import { LocalDateTimeField } from "@/components/local-date-time";
 
 export const dynamic = "force-dynamic";
 
@@ -194,14 +195,9 @@ export default async function OpportunityDetailPage({
               </Field>
 
               <Field label="Fecha y hora de próxima acción">
-                <input
+                <LocalDateTimeField
                   name="next_action_at"
-                  type="datetime-local"
-                  defaultValue={
-                    opportunity.next_action_at
-                      ? new Date(opportunity.next_action_at).toISOString().slice(0, 16)
-                      : ""
-                  }
+                  initialValue={opportunity.next_action_at}
                   className={input}
                 />
               </Field>

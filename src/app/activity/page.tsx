@@ -1,3 +1,5 @@
+import { AppNavigation } from "@/components/app-navigation";
+import { LocalDateTime } from "@/components/local-date-time";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 
@@ -30,7 +32,7 @@ export default async function ActivityHistoryPage({
     ? params.period!
     : "all";
 
-  const { supabase, workspaceId } = await getWorkspaceContext();
+  const { supabase, workspaceId, role } = await getWorkspaceContext();
   let query = supabase
     .from("activities")
     .select("id, type, subject, body, occurred_at, contact_id, opportunity_id")
@@ -81,7 +83,7 @@ export default async function ActivityHistoryPage({
           </div>
           <Link href="/dashboard" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500">Dashboard</Link>
         </header>
-
+<AppNavigation role={role} />
         <form method="get" className="mt-7 flex flex-wrap items-end gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
           <label className="text-sm text-slate-300">
             Tipo de actividad
@@ -132,7 +134,7 @@ export default async function ActivityHistoryPage({
                       <span className="rounded-full border border-cyan-900 bg-cyan-950/40 px-2.5 py-1 text-xs font-medium text-cyan-300">
                         {activityLabels[activity.type] ?? activity.type}
                       </span>
-                      <time className="text-xs text-slate-500">{new Date(activity.occurred_at).toLocaleString("es-ES")}</time>
+                      <time className="text-xs text-slate-500">{<LocalDateTime value={activity.occurred_at} />}</time>
                     </div>
                     <h3 className="mt-3 font-medium text-slate-100">{activity.subject}</h3>
                     {activity.body && <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">{activity.body}</p>}

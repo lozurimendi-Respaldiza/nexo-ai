@@ -17,17 +17,6 @@ function daysBetween(earlier: string, later: Date) {
   return Math.floor((later.getTime() - new Date(earlier).getTime()) / 86_400_000);
 }
 
-function dateLabel(value: string | null | undefined) {
-  if (!value) return "Sin fecha";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime())
-    ? "Fecha no disponible"
-    : new Intl.DateTimeFormat("es-ES", {
-        dateStyle: "medium",
-        timeStyle: value.includes("T") ? "short" : undefined,
-      }).format(date);
-}
-
 const terminalStages = new Set(["won", "lost"]);
 const completedTaskStatuses = new Set(["done", "completed", "cancelled", "canceled", "closed"]);
 

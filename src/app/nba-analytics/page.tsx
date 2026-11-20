@@ -1,3 +1,5 @@
+import { AppNavigation } from "@/components/app-navigation";
+import { LocalDateTime } from "@/components/local-date-time";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 
@@ -15,9 +17,6 @@ type EventRow = {
   opportunity_id: string | null;
   task_id: string | null;
 };
-
-const dateTime = (value: string) =>
-  new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 
 function utcDateKey(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -68,7 +67,7 @@ export default async function NbaAnalyticsPage({ searchParams }: { searchParams:
   const params = await searchParams;
   const requestedDays = Number(params.days);
   const days = [7, 30, 90].includes(requestedDays) ? requestedDays : 90;
-  const { supabase, workspaceId } = await getWorkspaceContext();
+  const { supabase, workspaceId, role } = await getWorkspaceContext();
   const db = supabase as any;
   const sinceDate = new Date(Date.now() - days * 86_400_000);
   const since = sinceDate.toISOString();
@@ -184,7 +183,7 @@ export default async function NbaAnalyticsPage({ searchParams }: { searchParams:
             <Link href="/dashboard" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm hover:border-slate-500">Dashboard</Link>
           </div>
         </header>
-
+<AppNavigation role={role} />
         <nav aria-label="Periodo de analítica" className="mt-6 flex flex-wrap items-center gap-2">
           <span className="mr-2 text-sm text-slate-400">Periodo:</span>
           {[7, 30, 90].map((period) => (
@@ -276,13 +275,13 @@ export default async function NbaAnalyticsPage({ searchParams }: { searchParams:
                       <article key={event.id} className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/50 p-4">
                         <div>
                           <p className="font-medium">{event.title_snapshot}</p>
-                          <p className="mt-1 text-xs text-slate-500">{event.kind === "opportunity" ? "Oportunidad" : "Tarea"} · Prioridad registrada {event.score}/100 · {dateTime(event.recommended_at)}</p>
+                          <p className="mt-1 text-xs text-slate-500">{event.kind === "opportunity" ? "Oportunidad" : "Tarea"} · Prioridad registrada {event.score}/100 · <LocalDateTime value={event.recommended_at} /></p>
                         </div>
                         <div className="text-right">
                           <p className={`text-sm font-medium ${event.status === "executed" ? "text-emerald-300" : event.status === "dismissed" ? "text-slate-400" : "text-amber-300"}`}>
                             {event.status === "executed" ? "Ejecutada" : event.status === "dismissed" ? "Descartada" : "Pendiente"}
                           </p>
-                          {event.acted_at && <p className="mt-1 text-xs text-slate-500">{dateTime(event.acted_at)}</p>}
+                          {event.acted_at && <p className="mt-1 text-xs text-slate-500"><LocalDateTime value={event.acted_at} /></p>}
                         </div>
                       </article>
                     ))}

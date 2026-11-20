@@ -1,3 +1,5 @@
+import { AppNavigation } from "@/components/app-navigation";
+import { LocalDateTime } from "@/components/local-date-time";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 
@@ -13,7 +15,7 @@ const money = (amount: number, currency = "EUR") =>
 
 export default async function OpportunitiesPage({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
   const params = await searchParams;
-  const { supabase, workspaceId } = await getWorkspaceContext();
+  const { supabase, workspaceId, role } = await getWorkspaceContext();
   const db = supabase as any;
 
   const { data: opportunities, error } = await db.from("opportunities")
@@ -53,7 +55,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
           <Link href="/opportunities/new" className="rounded-lg bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">+ Nueva oportunidad</Link>
         </div>
       </header>
-
+<AppNavigation role={role} />
       {params.saved && <p className="mt-5 rounded-lg border border-emerald-900 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-300">Cambios guardados correctamente. La oportunidad ya está actualizada en el pipeline.</p>}
 
       <section className="mt-7 grid gap-4 sm:grid-cols-3">
@@ -76,7 +78,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
                 <p className="font-medium text-slate-100">{o.title}</p>
                 <p className="mt-1 text-xs text-slate-500">{contactMap.get(o.contact_id) ?? "Sin contacto vinculado"}</p>
                 <div className="mt-3 flex items-center justify-between text-sm"><span className="font-semibold text-slate-200">{money(Number(o.value), o.currency || "EUR")}</span><span className="text-xs text-slate-400">{o.probability}%</span></div>
-                {o.next_action_at && <p className="mt-2 text-xs text-slate-500">Próxima acción: {new Date(o.next_action_at).toLocaleDateString("es-ES")}</p>}
+                {o.next_action_at && <p className="mt-2 text-xs text-slate-500">Próxima acción: {<LocalDateTime value={o.next_action_at} />}</p>}
               </Link>)}
               {items.length === 0 && <p className="rounded-lg border border-dashed border-slate-700 p-4 text-center text-xs text-slate-500">Sin oportunidades</p>}
             </div>

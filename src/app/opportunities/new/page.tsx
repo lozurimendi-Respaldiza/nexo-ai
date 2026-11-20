@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 import { createOpportunityAction } from "../actions";
+import { LocalDateTimeField } from "@/components/local-date-time";
 
 export const dynamic = "force-dynamic";
 
@@ -146,7 +147,7 @@ export default async function NewOpportunityPage({
                 <input name="expected_close_date" type="date" className={inputClass} />
               </Field>
               <Field label="Fecha de la próxima acción">
-                <input name="next_action_at" type="datetime-local" className={inputClass} />
+                <LocalDateTimeField name="next_action_at" className={inputClass} />
               </Field>
             </div>
 

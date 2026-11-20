@@ -1,3 +1,4 @@
+import { LocalDate, LocalDateTime } from "@/components/local-date-time";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createContactActivityAction, deleteContactAction } from "@/app/contacts/actions";
@@ -75,20 +76,31 @@ export default async function ContactDetailPage({ params, searchParams }: Contac
         {query.activityError && <p className="mt-5 rounded-lg border border-rose-900 bg-rose-950/30 px-4 py-3 text-sm text-rose-300">No se pudo registrar la actividad. Revisa los datos.</p>}
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            ["Email", contact.email],
-            ["Teléfono", contact.phone],
-            ["Empresa", contact.company],
-            ["Origen", contact.source],
-            ["Estado", statusLabels[contact.status] ?? contact.status],
-            ["Fecha de alta", new Date(contact.created_at).toLocaleDateString("es-ES")],
-          ].map(([label, value]) => (
-            <article key={label} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-              <p className={fieldLabel}>{label}</p>
-              <p className="mt-2 break-words text-sm text-slate-200">{value || "—"}</p>
-            </article>
-          ))}
-        </section>
+  {[
+    { label: "Email", value: contact.email },
+    { label: "Teléfono", value: contact.phone },
+    { label: "Empresa", value: contact.company },
+    { label: "Origen", value: contact.source },
+    {
+      label: "Estado",
+      value: statusLabels[contact.status] ?? contact.status,
+    },
+    {
+      label: "Fecha de alta",
+      value: <LocalDate value={contact.created_at} />,
+    },
+  ].map(({ label, value }) => (
+    <article
+      key={label}
+      className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"
+    >
+      <p className={fieldLabel}>{label}</p>
+      <p className="mt-2 break-words text-sm text-slate-200">
+        {value || "—"}
+      </p>
+    </article>
+  ))}
+</section>
 
         {contact.notes && (
           <section className="mt-4 rounded-xl border border-slate-800 bg-slate-900/60 p-5">
@@ -109,7 +121,7 @@ export default async function ContactDetailPage({ params, searchParams }: Contac
                   <article key={activity.id} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs font-semibold text-cyan-300">{activityLabels[activity.type] ?? activity.type}</span>
-                      <time className="text-xs text-slate-500">{new Date(activity.occurred_at).toLocaleString("es-ES")}</time>
+                      <time className="text-xs text-slate-500">{<LocalDateTime value={activity.occurred_at} />}</time>
                     </div>
                     <h3 className="mt-2 text-sm font-medium">{activity.subject}</h3>
                     {activity.body && <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">{activity.body}</p>}

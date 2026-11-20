@@ -1,3 +1,5 @@
+import { AppNavigation } from "@/components/app-navigation";
+import { LocalDate, LocalDateTime } from "@/components/local-date-time";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 import { CopyMessageButton } from "./copy-message-button";
@@ -31,14 +33,6 @@ function daysBetween(earlier: string, later: Date) {
   return Math.floor((later.getTime() - new Date(earlier).getTime()) / 86_400_000);
 }
 
-function dateLabel(value: string | null | undefined) {
-  if (!value) return "Sin fecha";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime())
-    ? "Fecha no disponible"
-    : new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: value.includes("T") ? "short" : undefined }).format(date);
-}
-
 function money(value: number, currency = "EUR") {
   try {
     return new Intl.NumberFormat("es-ES", { style: "currency", currency }).format(value || 0);
@@ -48,7 +42,7 @@ function money(value: number, currency = "EUR") {
 }
 
 export default async function NextBestActionPage() {
-  const { supabase, workspaceId } = await getWorkspaceContext();
+  const { supabase, workspaceId, role } = await getWorkspaceContext();
   const now = new Date();
   const [
     { data: opportunities, error: opportunitiesError },
@@ -152,9 +146,9 @@ export default async function NextBestActionPage() {
       kind: "task",
       title: task.title,
       score,
-      reason: overdue
-        ? `La tarea está vencida desde el ${dateLabel(task.due_at)}. Mantenerla pendiente puede retrasar el avance comercial.`
-        : `La tarea vence el ${dateLabel(task.due_at)}. Conviene reservar tiempo para completarla.`,
+     reason: overdue
+  ? "La tarea está vencida. Mantenerla pendiente puede retrasar el avance comercial."
+  : "La tarea tiene un vencimiento próximo. Conviene reservar tiempo para completarla.",
       action: overdue ? "Resolver la tarea vencida y actualizar su estado." : "Completar o preparar esta tarea antes de su vencimiento.",
       message: task.description || `Seguimiento pendiente${contactName ? ` con ${contactName}` : ""}: ${task.title}.`,
       href: opportunity ? `/opportunities/${opportunity.id}` : task.contact_id ? `/contacts/${task.contact_id}` : "/dashboard",
@@ -245,11 +239,11 @@ export default async function NextBestActionPage() {
     let action = "Revisar el estado comercial y registrar el siguiente paso.";
     if (nextOverdue) {
       label = "Acción vencida";
-      reason = `La próxima acción estaba prevista para el ${dateLabel(opportunity.next_action_at)} y sigue pendiente.`;
+      reason = "La próxima acción estaba prevista y sigue pendiente.";
       action = "Contactar al responsable o al cliente y actualizar la próxima acción.";
     } else if (nextSoon) {
       label = "Acción próxima";
-      reason = `La próxima acción está prevista para el ${dateLabel(opportunity.next_action_at)}.`;
+      reason = "La próxima acción está prevista y requiere preparación.";
       action = "Preparar el contacto y ejecutar el siguiente paso en la fecha prevista.";
     } else if (lastTouchDays === null) {
       label = "Sin actividad registrada";
@@ -315,7 +309,7 @@ export default async function NextBestActionPage() {
             <Link href="/dashboard" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm hover:border-slate-500">Dashboard</Link>
           </div>
         </header>
-
+<AppNavigation role={role} />
         {hasError ? (
           <div className="mt-7 rounded-xl border border-rose-900 bg-rose-950/30 p-5 text-sm text-rose-300">
             No se han podido consultar todos los datos necesarios. Revisa las políticas RLS de las tablas comerciales.
@@ -364,7 +358,16 @@ export default async function NextBestActionPage() {
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Por qué aparece</p>
                         <p className="mt-2 text-sm leading-6 text-slate-300">{item.reason}</p>
-                        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Siguiente acción</p>
+                        {item.dueAt && (
+                          <p className="mt-2 text-xs text-cyan-300">
+                            Fecha prevista:{" "}
+                            {/^\d{4}-\d{2}-\d{2}$/.test(item.dueAt) ? (
+                              <LocalDate value={item.dueAt} />
+                            ) : (
+                              <LocalDateTime value={item.dueAt} />
+                            )}
+                          </p>
+                        )}                        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Siguiente acción</p>
                         <p className="mt-2 text-sm leading-6 text-slate-300">{item.action}</p>
                       </div>
                       <div>

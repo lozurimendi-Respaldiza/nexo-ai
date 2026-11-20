@@ -1,3 +1,4 @@
+import { AppNavigation } from "@/components/app-navigation";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 import { signOutAction } from "@/app/login/actions";
@@ -31,6 +32,7 @@ export default async function DashboardPage() {
             <form action={signOutAction}><button className="rounded-lg border border-slate-700 px-4 py-2 text-sm hover:border-slate-500">Cerrar sesión</button></form>
           </div>
         </header>
+	<AppNavigation role={role} />
         <section className="mt-8">
           <h2 className="text-lg font-semibold">Resumen</h2>
           <p className="mt-1 text-sm text-slate-400">Actividad de tu espacio de trabajo.</p>

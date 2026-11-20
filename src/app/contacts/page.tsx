@@ -1,3 +1,5 @@
+import { AppNavigation } from "@/components/app-navigation";
+import { LocalDate } from "@/components/local-date-time";
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 
@@ -15,7 +17,7 @@ const statusLabels: Record<string, string> = {
 export default async function ContactsPage({ searchParams }: ContactsPageProps) {
   const params = await searchParams;
   const search = (params.q ?? "").trim().slice(0, 100);
-  const { supabase, workspaceId } = await getWorkspaceContext();
+  const { supabase, workspaceId, role } = await getWorkspaceContext();
 
   let query = supabase
     .from("contacts")
@@ -49,7 +51,7 @@ export default async function ContactsPage({ searchParams }: ContactsPageProps) 
             <Link href="/contacts/new" className="rounded-lg bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Nuevo contacto</Link>
           </div>
         </header>
-
+	<AppNavigation role={role} />
         {params.created && <p className="mt-5 rounded-lg border border-emerald-900 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-300">Contacto creado correctamente.</p>}
         {params.deleted && <p className="mt-5 rounded-lg border border-emerald-900 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-300">Contacto eliminado.</p>}
         {params.error && <p className="mt-5 rounded-lg border border-rose-900 bg-rose-950/30 px-4 py-3 text-sm text-rose-300">No se pudo completar la operación. Comprueba el contacto e inténtalo de nuevo.</p>}
@@ -85,7 +87,7 @@ export default async function ContactsPage({ searchParams }: ContactsPageProps) 
                 <Link key={contact.id} href={`/contacts/${contact.id}`} className="grid gap-2 px-5 py-4 transition hover:bg-slate-900/70 md:grid-cols-[1.5fr_1.2fr_1fr_0.8fr] md:items-center md:gap-4">
                   <div>
                     <p className="font-medium">{contact.first_name} {contact.last_name ?? ""}</p>
-                    <p className="mt-1 text-xs text-slate-500">{new Date(contact.created_at).toLocaleDateString("es-ES")}</p>
+                    <p className="mt-1 text-xs text-slate-500">{<LocalDate value={contact.created_at} />}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-300">{contact.company ?? "—"}</p>
