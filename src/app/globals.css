@@ -1,20 +1,116 @@
+
 @import "tailwindcss";
 
-:root {
+:root,
+:root[data-theme="light"] {
   color-scheme: light;
   --ink: #17212b;
-  --muted: #657383;
-  --line: #e5eaf0;
+  --muted: #526173;
+  --line: #7c8a9b;
   --surface: #ffffff;
+  --surface-secondary: #f1f5f9;
   --canvas: #f5f7fa;
   --accent: #1d4ed8;
+  --accent-foreground: #ffffff;
+  --accent-hover: #1e40af;
+  --accent-soft: #dbeafe;
+  --success: #166534;
+  --success-soft: #dcfce7;
+  --warning: #92400e;
+  --warning-soft: #fef3c7;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --field: #ffffff;
+  --focus: #2563eb;
 }
 
-* { box-sizing: border-box; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f1f5f9;
+  --muted: #c0ccda;
+  --line: #718096;
+  --surface: #172334;
+  --surface-secondary: #223247;
+  --canvas: #0d1726;
+  --accent: #7db2ff;
+  --accent-foreground: #172334;
+  --accent-hover: #a5caff;
+  --accent-soft: #203d61;
+  --success: #86efac;
+  --success-soft: #153b2a;
+  --warning: #fcd34d;
+  --warning-soft: #493716;
+  --danger: #fca5a5;
+  --danger-soft: #4a2026;
+  --field: #172334;
+  --focus: #93c5fd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
 body {
+  min-height: 100vh;
   margin: 0;
   background: var(--canvas);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
 }
-button, input { font: inherit; }
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  color: var(--ink);
+  background-color: var(--field);
+  border-color: var(--line);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.nexo-page {
+  min-height: 100vh;
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.nexo-card {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.nexo-muted {
+  color: var(--muted);
+}
+
+.nexo-field {
+  color: var(--ink);
+  background: var(--field);
+  border: 1px solid var(--line);
+}

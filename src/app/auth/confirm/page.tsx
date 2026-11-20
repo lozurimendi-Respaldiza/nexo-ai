@@ -28,20 +28,24 @@ export default async function ConfirmInvitationPage({
     validInvitationId;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-5 py-10 text-slate-100">
-      <section className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-7 shadow-xl">
+    <main className="nexo-page flex min-h-screen items-center justify-center px-5 py-10">
+      <section className="nexo-card w-full max-w-md rounded-2xl p-7 shadow-xl">
         <Link
           href="/"
-          className="text-xs font-semibold tracking-[0.25em] text-cyan-300"
+          className="text-xs font-semibold tracking-[0.25em]"
+style={{ color: "var(--accent)" }}
         >
           NEXO AI
         </Link>
 
-        <h1 className="mt-4 text-2xl font-semibold">
+        <h1
+  className="mt-4 text-2xl font-semibold"
+  style={{ color: "var(--ink)" }}
+>
           Aceptar invitación
         </h1>
 
-        <p className="mt-2 text-sm leading-6 text-slate-400">
+        <p className="nexo-muted mt-2 text-sm leading-6">
           Confirma tu acceso al espacio de trabajo. El enlace solo puede
           utilizarse una vez.
         </p>
@@ -49,7 +53,12 @@ export default async function ConfirmInvitationPage({
         {params.error && (
           <p
             role="alert"
-            className="mt-4 rounded-lg border border-rose-900 bg-rose-950/40 p-3 text-sm text-rose-200"
+            className="mt-4 rounded-lg border p-3 text-sm"
+style={{
+  borderColor: "var(--danger)",
+  backgroundColor: "var(--danger-soft)",
+  color: "var(--danger)",
+}}
           >
             {params.error}
           </p>
@@ -73,12 +82,21 @@ export default async function ConfirmInvitationPage({
               value={params.invitation_id}
             />
 
-            <button className="w-full rounded-lg bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-300">
+            <button className="w-full rounded-lg px-4 py-3 text-sm font-semibold transition-colors"
+style={{
+  backgroundColor: "var(--accent)",
+  color: "var(--accent-foreground, var(--ink))",
+}}>
               Confirmar y acceder
             </button>
           </form>
         ) : (
-          <p className="mt-6 rounded-lg border border-amber-800 bg-amber-950/30 p-3 text-sm text-amber-100">
+          <p className="mt-6 rounded-lg border p-3 text-sm"
+style={{
+  borderColor: "var(--warning)",
+  backgroundColor: "var(--warning-soft)",
+  color: "var(--warning)",
+}}>
             El enlace no es válido. Solicita al administrador que envíe una nueva invitación.
           </p>
         )}

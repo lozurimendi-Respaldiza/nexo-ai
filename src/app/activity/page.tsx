@@ -71,23 +71,59 @@ export default async function ActivityHistoryPage({
     opportunity.title,
   ] as [string, string]));
 
+
   return (
-    <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 sm:px-8">
+    <main className="nexo-page px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-6xl">
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800 pb-6">
+        <header
+          className="flex flex-wrap items-start justify-between gap-4 border-b pb-6"
+          style={{ borderColor: "var(--line)" }}
+        >
           <div>
-            <Link href="/dashboard" className="text-xs font-semibold tracking-[0.25em] text-cyan-300">NEXO AI</Link>
-            <p className="mt-4 text-xs font-semibold tracking-[0.2em] text-cyan-300">SEGUIMIENTO COMERCIAL</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">Historial de actividad</h1>
-            <p className="mt-2 text-sm text-slate-400">Registro cronológico de las interacciones y cambios realizados en el espacio de trabajo.</p>
+            <Link
+              href="/dashboard"
+              className="text-xs font-semibold tracking-[0.25em]"
+              style={{ color: "var(--accent)" }}
+            >
+              NEXO AI
+            </Link>
+            <p
+              className="mt-4 text-xs font-semibold tracking-[0.2em]"
+              style={{ color: "var(--accent)" }}
+            >
+              SEGUIMIENTO COMERCIAL
+            </p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+              Historial de actividad
+            </h1>
+            <p className="nexo-muted mt-2 text-sm">
+              Registro cronológico de las interacciones y cambios realizados
+              en el espacio de trabajo.
+            </p>
           </div>
-          <Link href="/dashboard" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500">Dashboard</Link>
+          <Link
+            href="/dashboard"
+            className="nexo-field rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+          >
+            Dashboard
+          </Link>
         </header>
-<AppNavigation role={role} />
-        <form method="get" className="mt-7 flex flex-wrap items-end gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-          <label className="text-sm text-slate-300">
+
+        <div className="mt-6">
+          <AppNavigation role={role} />
+        </div>
+
+        <form
+          method="get"
+          className="nexo-card mt-7 flex flex-wrap items-end gap-3 rounded-xl p-4"
+        >
+          <label className="text-sm font-medium">
             Tipo de actividad
-            <select name="type" defaultValue={selectedType} className="mt-1 block min-w-48 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm">
+            <select
+              name="type"
+              defaultValue={selectedType}
+              className="nexo-field mt-1 block min-w-48 rounded-lg px-3 py-2.5 text-sm"
+            >
               <option value="all">Todos los tipos</option>
               <option value="call">Llamadas</option>
               <option value="email">Emails</option>
@@ -97,27 +133,61 @@ export default async function ActivityHistoryPage({
               <option value="status_change">Cambios de etapa</option>
             </select>
           </label>
-          <label className="text-sm text-slate-300">
+
+          <label className="text-sm font-medium">
             Periodo
-            <select name="period" defaultValue={selectedPeriod} className="mt-1 block min-w-40 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm">
+            <select
+              name="period"
+              defaultValue={selectedPeriod}
+              className="nexo-field mt-1 block min-w-40 rounded-lg px-3 py-2.5 text-sm"
+            >
               <option value="7">Últimos 7 días</option>
               <option value="30">Últimos 30 días</option>
               <option value="90">Últimos 90 días</option>
               <option value="all">Todo el historial</option>
             </select>
           </label>
-          <button type="submit" className="rounded-lg bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Aplicar filtros</button>
-          <Link href="/activity" className="px-2 py-2.5 text-sm text-slate-400 hover:text-white">Limpiar</Link>
+
+          <button
+            type="submit"
+            className="rounded-lg border px-4 py-2.5 text-sm font-semibold transition-colors"
+            style={{
+              borderColor: "var(--accent)",
+              backgroundColor: "var(--accent-soft)",
+              color: "var(--accent)",
+            }}
+          >
+            Aplicar filtros
+          </button>
+
+          <Link
+            href="/activity"
+            className="nexo-muted rounded-lg px-2 py-2.5 text-sm transition-colors hover:underline"
+          >
+            Limpiar
+          </Link>
         </form>
 
         <section className="mt-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-semibold">Actividad registrada</h2>
-            <p className="text-sm text-slate-500">{rows.length} registros{rows.length === 1000 ? " · máximo mostrado: 1.000" : ""}</p>
+            <p className="nexo-muted text-sm">
+              {rows.length} registros
+              {rows.length === 1000 ? " · máximo mostrado: 1.000" : ""}
+            </p>
           </div>
 
           {error ? (
-            <div className="rounded-xl border border-rose-900 bg-rose-950/30 p-5 text-sm text-rose-300">No se pudo cargar el historial de actividad.</div>
+            <div
+              className="rounded-xl border p-5 text-sm"
+              style={{
+                borderColor: "var(--danger)",
+                backgroundColor: "var(--danger-soft)",
+                color: "var(--danger)",
+              }}
+            >
+              No se pudo cargar el historial de actividad.
+            </div>
           ) : rows.length ? (
             <div className="space-y-3">
               {rows.map((activity) => {
@@ -129,25 +199,67 @@ export default async function ActivityHistoryPage({
                   : null;
 
                 return (
-                  <article key={activity.id} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5">
+                  <article
+                    key={activity.id}
+                    className="nexo-card rounded-xl p-4 sm:p-5"
+                  >
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="rounded-full border border-cyan-900 bg-cyan-950/40 px-2.5 py-1 text-xs font-medium text-cyan-300">
+                      <span
+                        className="rounded-full border px-2.5 py-1 text-xs font-medium"
+                        style={{
+                          borderColor: "var(--accent)",
+                          backgroundColor: "var(--accent-soft)",
+                          color: "var(--accent)",
+                        }}
+                      >
                         {activityLabels[activity.type] ?? activity.type}
                       </span>
-                      <time className="text-xs text-slate-500">{<LocalDateTime value={activity.occurred_at} />}</time>
+                      <time className="nexo-muted text-xs">
+                        <LocalDateTime value={activity.occurred_at} />
+                      </time>
                     </div>
-                    <h3 className="mt-3 font-medium text-slate-100">{activity.subject}</h3>
-                    {activity.body && <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">{activity.body}</p>}
-                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-800 pt-3 text-xs text-slate-500">
-                      {activity.contact_id && contactMap.has(activity.contact_id) ? (
-                        <Link href={`/contacts/${activity.contact_id}`} className="hover:text-cyan-300">Contacto: {contactName}</Link>
+
+                    <h3 className="mt-3 font-medium">
+                      {activity.subject}
+                    </h3>
+
+                    {activity.body && (
+                      <p className="nexo-muted mt-2 whitespace-pre-wrap text-sm leading-6">
+                        {activity.body}
+                      </p>
+                    )}
+
+                    <div
+                      className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t pt-3 text-xs"
+                      style={{ borderColor: "var(--line)" }}
+                    >
+                      {activity.contact_id &&
+                      contactMap.has(activity.contact_id) ? (
+                        <Link
+                          href={`/contacts/${activity.contact_id}`}
+                          className="transition-colors hover:underline"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          Contacto: {contactName}
+                        </Link>
                       ) : (
-                        <span>Contacto: {contactName}</span>
+                        <span className="nexo-muted">
+                          Contacto: {contactName}
+                        </span>
                       )}
+
                       {activity.opportunity_id && opportunityTitle ? (
-                        <Link href={`/opportunities/${activity.opportunity_id}`} className="hover:text-cyan-300">Oportunidad: {opportunityTitle}</Link>
+                        <Link
+                          href={`/opportunities/${activity.opportunity_id}`}
+                          className="transition-colors hover:underline"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          Oportunidad: {opportunityTitle}
+                        </Link>
                       ) : activity.opportunity_id ? (
-                        <span>Oportunidad asociada no disponible</span>
+                        <span className="nexo-muted">
+                          Oportunidad asociada no disponible
+                        </span>
                       ) : null}
                     </div>
                   </article>
@@ -155,9 +267,16 @@ export default async function ActivityHistoryPage({
               })}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-slate-700 p-8 text-center">
-              <p className="font-medium text-slate-300">No hay actividades para estos filtros.</p>
-              <p className="mt-2 text-sm text-slate-500">Prueba con otro periodo o selecciona todos los tipos.</p>
+            <div
+              className="nexo-card rounded-xl border-dashed p-8 text-center"
+              style={{ borderColor: "var(--line)" }}
+            >
+              <p className="font-medium">
+                No hay actividades para estos filtros.
+              </p>
+              <p className="nexo-muted mt-2 text-sm">
+                Prueba con otro periodo o selecciona todos los tipos.
+              </p>
             </div>
           )}
         </section>

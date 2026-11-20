@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { getWorkspaceContext } from "@/lib/workspace-context";
 import { createOpportunityAction } from "../actions";
@@ -16,7 +17,7 @@ const stages = [
 ] as const;
 
 const inputClass =
-  "mt-1 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-900/50";
+  "nexo-field mt-1 block w-full rounded-lg px-3 py-2.5 text-sm outline-none transition focus:ring-2";
 
 export default async function NewOpportunityPage({
   searchParams,
@@ -35,36 +36,56 @@ export default async function NewOpportunityPage({
     .limit(500);
 
   return (
-    <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 sm:px-8">
+    <main className="nexo-page px-5 py-8 sm:px-8">
       <div className="mx-auto max-w-3xl">
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800 pb-6">
+        <header
+          className="flex flex-wrap items-start justify-between gap-4 border-b pb-6"
+          style={{ borderColor: "var(--line)" }}
+        >
           <div>
             <Link
               href="/dashboard"
-              className="text-xs font-semibold tracking-[0.25em] text-cyan-300 hover:text-cyan-200"
+              className="text-xs font-semibold tracking-[0.25em]"
+              style={{ color: "var(--accent)" }}
             >
               NEXO AI
             </Link>
-            <p className="mt-4 text-xs font-semibold tracking-[0.2em] text-cyan-300">
+
+            <p
+              className="mt-4 text-xs font-semibold tracking-[0.2em]"
+              style={{ color: "var(--accent)" }}
+            >
               GESTIÓN COMERCIAL
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">
+
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
               Nueva oportunidad
             </h1>
-            <p className="mt-2 text-sm text-slate-400">
+
+            <p className="nexo-muted mt-2 text-sm">
               Registra el potencial comercial y define su siguiente paso.
             </p>
           </div>
-          <nav className="flex flex-wrap items-center gap-3" aria-label="Navegación principal">
+
+          <nav
+            className="flex flex-wrap items-center gap-3"
+            aria-label="Navegación principal"
+          >
             <Link
               href="/next-best-action"
-              className="rounded-lg border border-cyan-800 bg-cyan-950/40 px-4 py-2.5 text-sm font-medium text-cyan-300 transition hover:border-cyan-500 hover:bg-cyan-950/70"
+              className="rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+              style={{
+                borderColor: "var(--line)",
+                backgroundColor: "var(--accent-soft)",
+                color: "var(--ink)",
+              }}
             >
               Next Best Action
             </Link>
+
             <Link
               href="/opportunities"
-              className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500"
+              className="nexo-field rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
             >
               Pipeline
             </Link>
@@ -74,17 +95,27 @@ export default async function NewOpportunityPage({
         {params.error && (
           <p
             role="alert"
-            className="mt-5 rounded-lg border border-rose-900 bg-rose-950/30 px-4 py-3 text-sm text-rose-300"
+            className="mt-5 rounded-lg border px-4 py-3 text-sm"
+            style={{
+              borderColor: "var(--danger)",
+              backgroundColor: "var(--danger-soft)",
+              color: "var(--danger)",
+            }}
           >
-            No se pudo crear la oportunidad. Revisa los datos introducidos e inténtalo de nuevo.
+            No se pudo crear la oportunidad. Revisa los datos introducidos e
+            inténtalo de nuevo.
           </p>
         )}
 
-        <section className="mt-7 rounded-xl border border-slate-800 bg-slate-900/60 p-5 sm:p-7">
+        <section className="nexo-card mt-7 rounded-xl p-5 sm:p-7">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-white">Datos de la oportunidad</h2>
-            <p className="mt-1 text-sm text-slate-400">
-              Completa la información comercial. Podrás modificarla posteriormente.
+            <h2 className="text-lg font-semibold">
+              Datos de la oportunidad
+            </h2>
+
+            <p className="nexo-muted mt-1 text-sm">
+              Completa la información comercial. Podrás modificarla
+              posteriormente.
             </p>
           </div>
 
@@ -101,11 +132,17 @@ export default async function NewOpportunityPage({
             </Field>
 
             <Field label="Contacto asociado">
-              <select name="contact_id" className={inputClass} defaultValue="">
+              <select
+                name="contact_id"
+                className={inputClass}
+                defaultValue=""
+              >
                 <option value="">Sin contacto vinculado</option>
                 {(contacts ?? []).map((contact: any) => (
                   <option key={contact.id} value={contact.id}>
-                    {[contact.first_name, contact.last_name].filter(Boolean).join(" ") || "Contacto"}
+                    {[contact.first_name, contact.last_name]
+                      .filter(Boolean)
+                      .join(" ") || "Contacto"}
                     {contact.company ? ` · ${contact.company}` : ""}
                   </option>
                 ))}
@@ -123,6 +160,7 @@ export default async function NewOpportunityPage({
                   className={inputClass}
                 />
               </Field>
+
               <Field label="Probabilidad de cierre (%)">
                 <input
                   name="probability"
@@ -134,8 +172,13 @@ export default async function NewOpportunityPage({
                   className={inputClass}
                 />
               </Field>
+
               <Field label="Etapa">
-                <select name="stage" defaultValue="new" className={inputClass}>
+                <select
+                  name="stage"
+                  defaultValue="new"
+                  className={inputClass}
+                >
                   {stages.map(([value, label]) => (
                     <option key={value} value={value}>
                       {label}
@@ -143,24 +186,42 @@ export default async function NewOpportunityPage({
                   ))}
                 </select>
               </Field>
+
               <Field label="Fecha prevista de cierre">
-                <input name="expected_close_date" type="date" className={inputClass} />
+                <input
+                  name="expected_close_date"
+                  type="date"
+                  className={inputClass}
+                />
               </Field>
+
               <Field label="Fecha de la próxima acción">
-                <LocalDateTimeField name="next_action_at" className={inputClass} />
+                <LocalDateTimeField
+                  name="next_action_at"
+                  className={inputClass}
+                />
               </Field>
             </div>
 
-            <div className="flex flex-wrap justify-end gap-3 border-t border-slate-800 pt-5">
+            <div
+              className="flex flex-wrap justify-end gap-3 border-t pt-5"
+              style={{ borderColor: "var(--line)" }}
+            >
               <Link
                 href="/opportunities"
-                className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500"
+                className="nexo-field rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
               >
                 Cancelar
               </Link>
+
               <button
                 type="submit"
-                className="rounded-lg bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+                className="rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
+                style={{
+                  backgroundColor: "var(--accent-soft)",
+                  color: "var(--ink)",
+                  border: "1px solid var(--line)",
+                }}
               >
                 Crear oportunidad
               </button>
@@ -180,7 +241,10 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="block text-sm font-medium text-slate-300">
+    <label
+      className="block text-sm font-medium"
+      style={{ color: "var(--ink)" }}
+    >
       {label}
       {children}
     </label>

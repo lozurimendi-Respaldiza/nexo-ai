@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -19,7 +20,13 @@ export function CopyMessageButton({ message }: { message: string }) {
     <button
       type="button"
       onClick={copyMessage}
-      className="rounded-lg bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300"
+      className="rounded-lg border px-3 py-2 text-sm font-semibold transition-colors"
+      style={{
+        borderColor: copied ? "var(--success)" : "var(--accent)",
+        backgroundColor: copied ? "var(--success-soft)" : "var(--accent-soft)",
+        color: copied ? "var(--success)" : "var(--accent)",
+      }}
+      aria-live="polite"
     >
       {copied ? "Copiado" : "Copiar mensaje"}
     </button>

@@ -293,26 +293,82 @@ export default async function NextBestActionPage() {
   const taskCount = visible.filter((item) => item.kind === "task").length;
   const opportunityCount = visible.length - taskCount;
 
+
   return (
-    <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100 sm:px-8">
+    <main
+      className="nexo-page px-5 py-8 sm:px-8"
+      style={{ backgroundColor: "var(--canvas)", color: "var(--ink)" }}
+    >
       <div className="mx-auto max-w-6xl">
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800 pb-6">
+        <header
+          className="flex flex-wrap items-start justify-between gap-4 border-b pb-6"
+          style={{ borderColor: "var(--line)" }}
+        >
           <div>
-            <Link href="/dashboard" className="text-xs font-semibold tracking-[0.25em] text-cyan-300">NEXO AI</Link>
-            <p className="mt-4 text-xs font-semibold tracking-[0.2em] text-cyan-300">INTELIGENCIA COMERCIAL</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">Next Best Action</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-400">Prioriza el siguiente movimiento comercial según vencimientos, actividad e información del pipeline.</p>
+            <Link
+              href="/dashboard"
+              className="text-xs font-semibold tracking-[0.25em]"
+              style={{ color: "var(--accent)" }}
+            >
+              NEXO AI
+            </Link>
+            <p
+              className="mt-4 text-xs font-semibold tracking-[0.2em]"
+              style={{ color: "var(--accent)" }}
+            >
+              INTELIGENCIA COMERCIAL
+            </p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+              Next Best Action
+            </h1>
+            <p className="nexo-muted mt-2 max-w-2xl text-sm">
+              Prioriza el siguiente movimiento comercial según vencimientos,
+              actividad e información del pipeline.
+            </p>
           </div>
-          <div className="flex gap-3">
-            <Link href="/opportunities" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm hover:border-slate-500">Pipeline</Link>
-            <Link href="/nba-analytics" className="rounded-lg border border-cyan-900 px-4 py-2.5 text-sm text-cyan-300 hover:border-cyan-600">Resultados NBA</Link>
-            <Link href="/dashboard" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm hover:border-slate-500">Dashboard</Link>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/opportunities"
+              className="nexo-field rounded-lg px-4 py-2.5 text-sm transition-colors"
+            >
+              Pipeline
+            </Link>
+            <Link
+              href="/nba-analytics"
+              className="rounded-lg border px-4 py-2.5 text-sm transition-colors"
+              style={{
+                borderColor: "var(--accent)",
+                color: "var(--accent)",
+                backgroundColor: "var(--accent-soft)",
+              }}
+            >
+              Resultados NBA
+            </Link>
+            <Link
+              href="/dashboard"
+              className="nexo-field rounded-lg px-4 py-2.5 text-sm transition-colors"
+            >
+              Dashboard
+            </Link>
           </div>
         </header>
-<AppNavigation role={role} />
+
+        <div className="mt-6">
+          <AppNavigation role={role} />
+        </div>
+
         {hasError ? (
-          <div className="mt-7 rounded-xl border border-rose-900 bg-rose-950/30 p-5 text-sm text-rose-300">
-            No se han podido consultar todos los datos necesarios. Revisa las políticas RLS de las tablas comerciales.
+          <div
+            className="mt-7 rounded-xl border p-5 text-sm"
+            style={{
+              borderColor: "var(--danger)",
+              backgroundColor: "var(--danger-soft)",
+              color: "var(--danger)",
+            }}
+          >
+            No se han podido consultar todos los datos necesarios. Revisa las
+            políticas RLS de las tablas comerciales.
           </div>
         ) : (
           <>
@@ -321,45 +377,104 @@ export default async function NextBestActionPage() {
               <Metric label="Tareas" value={String(taskCount)} />
               <Metric label="Oportunidades" value={String(opportunityCount)} />
             </section>
+
             <div className="mt-8 flex flex-wrap items-end justify-between gap-3">
               <div>
-                <h2 className="text-xl font-semibold">Prioridad de actuación</h2>
-                <p className="mt-1 text-sm text-slate-400">Índice calculado con urgencia, inactividad, etapa y valor esperado. Los factores aparecen desglosados en cada recomendación.</p>
+                <h2 className="text-xl font-semibold">
+                  Prioridad de actuación
+                </h2>
+                <p className="nexo-muted mt-1 text-sm">
+                  Índice calculado con urgencia, inactividad, etapa y valor
+                  esperado. Los factores aparecen desglosados en cada
+                  recomendación.
+                </p>
               </div>
-              <p className="text-xs text-slate-500">Actualizado al consultar esta página</p>
+              <p className="nexo-muted text-xs">
+                Actualizado al consultar esta página
+              </p>
             </div>
+
             {visible.length ? (
               <section className="mt-4 space-y-4">
                 {visible.map((item, index) => (
-                  <article key={item.id} className="rounded-xl border border-slate-800 bg-slate-900/70 p-5">
+                  <article
+                    key={item.id}
+                    className="nexo-card rounded-xl p-5"
+                  >
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="rounded-full border border-cyan-900 bg-cyan-950/50 px-2.5 py-1 text-xs font-medium text-cyan-300">{item.label}</span>
-                          <span className="text-xs text-slate-500">#{index + 1} · {item.kind === "task" ? "Tarea" : "Oportunidad"}</span>
+                          <span
+                            className="rounded-full border px-2.5 py-1 text-xs font-medium"
+                            style={{
+                              borderColor: "var(--accent)",
+                              backgroundColor: "var(--accent-soft)",
+                              color: "var(--accent)",
+                            }}
+                          >
+                            {item.label}
+                          </span>
+                          <span className="nexo-muted text-xs">
+                            #{index + 1} ·{" "}
+                            {item.kind === "task" ? "Tarea" : "Oportunidad"}
+                          </span>
                         </div>
-                        <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
-                        {item.contactName && <p className="mt-1 text-sm text-slate-400">Contacto: {item.contactName}</p>}
-                        {item.kind === "opportunity" && <p className="mt-1 text-sm text-slate-400">Valor: {money(item.value ?? 0, item.currency)}</p>}
+
+                        <h3 className="mt-3 text-lg font-semibold">
+                          {item.title}
+                        </h3>
+
+                        {item.contactName && (
+                          <p className="nexo-muted mt-1 text-sm">
+                            Contacto: {item.contactName}
+                          </p>
+                        )}
+
+                        {item.kind === "opportunity" && (
+                          <p className="nexo-muted mt-1 text-sm">
+                            Valor: {money(item.value ?? 0, item.currency)}
+                          </p>
+                        )}
                       </div>
+
                       <div className="min-w-20 text-right">
-                        <p className="text-3xl font-semibold tabular-nums text-cyan-300">{item.score}</p>
-                        <p className="text-xs text-slate-500">prioridad / 100</p>
+                        <p
+                          className="text-3xl font-semibold tabular-nums"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          {item.score}
+                        </p>
+                        <p className="nexo-muted text-xs">prioridad / 100</p>
                         <div className="mt-2 space-y-1 text-left">
                           {item.scoreFactors.map((factor) => (
-                            <p key={factor.label} className="whitespace-nowrap text-[10px] text-slate-500">
+                            <p
+                              key={factor.label}
+                              className="nexo-muted whitespace-nowrap text-[10px]"
+                            >
                               {factor.label}: +{factor.points}
                             </p>
                           ))}
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4 grid gap-4 border-t border-slate-800 pt-4 md:grid-cols-2">
+
+                    <div
+                      className="mt-4 grid gap-4 border-t pt-4 md:grid-cols-2"
+                      style={{ borderColor: "var(--line)" }}
+                    >
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Por qué aparece</p>
-                        <p className="mt-2 text-sm leading-6 text-slate-300">{item.reason}</p>
+                        <p className="nexo-muted text-xs font-semibold uppercase tracking-wide">
+                          Por qué aparece
+                        </p>
+                        <p className="mt-2 text-sm leading-6">
+                          {item.reason}
+                        </p>
+
                         {item.dueAt && (
-                          <p className="mt-2 text-xs text-cyan-300">
+                          <p
+                            className="mt-2 text-xs"
+                            style={{ color: "var(--accent)" }}
+                          >
                             Fecha prevista:{" "}
                             {/^\d{4}-\d{2}-\d{2}$/.test(item.dueAt) ? (
                               <LocalDate value={item.dueAt} />
@@ -367,52 +482,144 @@ export default async function NextBestActionPage() {
                               <LocalDateTime value={item.dueAt} />
                             )}
                           </p>
-                        )}                        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Siguiente acción</p>
-                        <p className="mt-2 text-sm leading-6 text-slate-300">{item.action}</p>
+                        )}
+
+                        <p className="nexo-muted mt-3 text-xs font-semibold uppercase tracking-wide">
+                          Siguiente acción
+                        </p>
+                        <p className="mt-2 text-sm leading-6">{item.action}</p>
                       </div>
+
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Mensaje sugerido · revisar antes de enviar</p>
-                        <p className="mt-2 rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm leading-6 text-slate-300">{item.message}</p>
+                        <p className="nexo-muted text-xs font-semibold uppercase tracking-wide">
+                          Mensaje sugerido · revisar antes de enviar
+                        </p>
+                        <p
+                          className="nexo-field mt-2 rounded-lg p-3 text-sm leading-6"
+                        >
+                          {item.message}
+                        </p>
+
                         <div className="mt-3 flex flex-wrap gap-3">
                           <CopyMessageButton message={item.message} />
-                          <Link href={item.href} className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:border-slate-500">Abrir ficha →</Link>
+                          <Link
+                            href={item.href}
+                            className="nexo-field rounded-lg px-3 py-2 text-sm transition-colors"
+                          >
+                            Abrir ficha →
+                          </Link>
                         </div>
-                        <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/70 p-3">
+
+                        <div
+                          className="mt-3 rounded-lg border p-3"
+                          style={{
+                            borderColor: "var(--line)",
+                            backgroundColor: "var(--surface-secondary)",
+                          }}
+                        >
                           {(() => {
-                            const targetId = item.id.replace(/^(opportunity|task)-/, "");
+                            const targetId = item.id.replace(
+                              /^(opportunity|task)-/,
+                              ""
+                            );
                             // Cada cambio de etapa abre un nuevo ciclo NBA para la oportunidad.
                             // Las tareas mantienen una única recomendación diaria por tarea.
-                            const key = item.kind === "opportunity"
-                              ? `opportunity:${targetId}:${item.stage || "new"}`
-                              : `task:${targetId}`;
+                            const key =
+                              item.kind === "opportunity"
+                                ? `opportunity:${targetId}:${item.stage || "new"}`
+                                : `task:${targetId}`;
                             const tracked = eventByKey.get(key);
+
                             if (tracked?.status === "recommended") {
                               return (
                                 <div className="flex flex-wrap items-center gap-2">
-                                  <span className="mr-auto text-xs text-amber-300">Recomendación registrada · pendiente</span>
+                                  <span
+                                    className="mr-auto text-xs"
+                                    style={{ color: "var(--warning)" }}
+                                  >
+                                    Recomendación registrada · pendiente
+                                  </span>
                                   <form action={executeRecommendationAction}>
-                                    <input type="hidden" name="event_id" value={tracked.id} />
-                                    <button className="rounded-lg bg-emerald-400 px-3 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-300">Marcar ejecutada</button>
+                                    <input
+                                      type="hidden"
+                                      name="event_id"
+                                      value={tracked.id}
+                                    />
+                                    <button
+                                      className="rounded-lg border px-3 py-2 text-xs font-semibold"
+                                      style={{
+                                        borderColor: "var(--success)",
+                                        backgroundColor: "var(--success-soft)",
+                                        color: "var(--success)",
+                                      }}
+                                    >
+                                      Marcar ejecutada
+                                    </button>
                                   </form>
                                   <form action={dismissRecommendationAction}>
-                                    <input type="hidden" name="event_id" value={tracked.id} />
-                                    <button className="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-300 hover:border-slate-500">Descartar</button>
+                                    <input
+                                      type="hidden"
+                                      name="event_id"
+                                      value={tracked.id}
+                                    />
+                                    <button
+                                      className="nexo-field rounded-lg px-3 py-2 text-xs"
+                                    >
+                                      Descartar
+                                    </button>
                                   </form>
                                 </div>
                               );
                             }
+
                             if (tracked?.status === "executed") {
-                              return <p className="text-xs text-emerald-300">Acción ejecutada y registrada hoy.</p>;
+                              return (
+                                <p
+                                  className="text-xs"
+                                  style={{ color: "var(--success)" }}
+                                >
+                                  Acción ejecutada y registrada hoy.
+                                </p>
+                              );
                             }
+
                             if (tracked?.status === "dismissed") {
-                              return <p className="text-xs text-slate-400">Recomendación descartada hoy.</p>;
+                              return (
+                                <p className="nexo-muted text-xs">
+                                  Recomendación descartada hoy.
+                                </p>
+                              );
                             }
+
                             return (
-                              <form action={registerRecommendationAction} className="flex flex-wrap items-center justify-between gap-3">
-                                <span className="text-xs text-slate-400">Registra esta recomendación para medir su resultado.</span>
-                                <input type="hidden" name="kind" value={item.kind} />
-                                <input type="hidden" name="target_id" value={targetId} />
-                                <button className="rounded-lg border border-cyan-800 px-3 py-2 text-xs font-semibold text-cyan-300 hover:border-cyan-500">Registrar recomendación</button>
+                              <form
+                                action={registerRecommendationAction}
+                                className="flex flex-wrap items-center justify-between gap-3"
+                              >
+                                <span className="nexo-muted text-xs">
+                                  Registra esta recomendación para medir su
+                                  resultado.
+                                </span>
+                                <input
+                                  type="hidden"
+                                  name="kind"
+                                  value={item.kind}
+                                />
+                                <input
+                                  type="hidden"
+                                  name="target_id"
+                                  value={targetId}
+                                />
+                                <button
+                                  className="rounded-lg border px-3 py-2 text-xs font-semibold transition-colors"
+                                  style={{
+                                    borderColor: "var(--accent)",
+                                    backgroundColor: "var(--accent-soft)",
+                                    color: "var(--accent)",
+                                  }}
+                                >
+                                  Registrar recomendación
+                                </button>
                               </form>
                             );
                           })()}
@@ -423,13 +630,43 @@ export default async function NextBestActionPage() {
                 ))}
               </section>
             ) : (
-              <div className="mt-4 rounded-xl border border-dashed border-slate-700 p-10 text-center">
-                <h3 className="font-semibold">No hay acciones prioritarias detectadas</h3>
-                <p className="mt-2 text-sm text-slate-400">Registra tareas, próximas acciones o interacciones para que NEXO AI pueda ordenar el seguimiento.</p>
-                <Link href="/opportunities" className="mt-5 inline-flex rounded-lg bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Revisar pipeline</Link>
+              <div
+                className="mt-4 rounded-xl border border-dashed p-10 text-center"
+                style={{ borderColor: "var(--line)" }}
+              >
+                <h3 className="font-semibold">
+                  No hay acciones prioritarias detectadas
+                </h3>
+                <p className="nexo-muted mt-2 text-sm">
+                  Registra tareas, próximas acciones o interacciones para que
+                  NEXO AI pueda ordenar el seguimiento.
+                </p>
+                <Link
+                  href="/opportunities"
+                  className="mt-5 inline-flex rounded-lg border px-4 py-2.5 text-sm font-semibold"
+                  style={{
+                    borderColor: "var(--accent)",
+                    backgroundColor: "var(--accent-soft)",
+                    color: "var(--accent)",
+                  }}
+                >
+                  Revisar pipeline
+                </Link>
               </div>
             )}
-            <p className="mt-6 text-xs leading-5 text-slate-500">Registrar una recomendación crea una referencia diaria. Al marcarla ejecutada, NEXO AI registra una actividad vinculada a la oportunidad o completa la tarea asociada. Las recomendaciones se calculan bajo demanda con reglas transparentes. Los datos ausentes no reciben puntos por inactividad ni por valor esperado. No se envían mensajes ni se modifican registros automáticamente. El índice es una regla operativa explicable, no una predicción estadística de cierre. El valor esperado usa el importe y la probabilidad registrados; la comparación económica es relativa a las oportunidades activas de este espacio.</p>
+
+            <p className="nexo-muted mt-6 text-xs leading-5">
+              Registrar una recomendación crea una referencia diaria. Al
+              marcarla ejecutada, NEXO AI registra una actividad vinculada a la
+              oportunidad o completa la tarea asociada. Las recomendaciones se
+              calculan bajo demanda con reglas transparentes. Los datos
+              ausentes no reciben puntos por inactividad ni por valor esperado.
+              No se envían mensajes ni se modifican registros automáticamente.
+              El índice es una regla operativa explicable, no una predicción
+              estadística de cierre. El valor esperado usa el importe y la
+              probabilidad registrados; la comparación económica es relativa a
+              las oportunidades activas de este espacio.
+            </p>
           </>
         )}
       </div>
@@ -437,6 +674,12 @@ export default async function NextBestActionPage() {
   );
 }
 
+
 function Metric({ label, value }: { label: string; value: string }) {
-  return <article className="rounded-xl border border-slate-800 bg-slate-900 p-5"><p className="text-sm text-slate-400">{label}</p><p className="mt-2 text-3xl font-semibold tabular-nums">{value}</p></article>;
+  return (
+    <article className="nexo-card rounded-xl p-5">
+      <p className="nexo-muted text-sm">{label}</p>
+      <p className="mt-2 text-3xl font-semibold tabular-nums">{value}</p>
+    </article>
+  );
 }

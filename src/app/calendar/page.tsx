@@ -55,26 +55,43 @@ export default async function CalendarPage({
       .limit(500),
   ]);
 
+
   return (
-    <main className="mx-auto min-h-screen max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <main className="nexo-page mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <AppNavigation role={role} />
 
       <header className="mb-6">
-        <p className="text-sm font-medium text-cyan-400">
+        <p
+          className="text-sm font-medium"
+          style={{ color: "var(--accent)" }}
+        >
           Organización comercial
         </p>
 
-        <h1 className="mt-1 text-3xl font-bold text-white">
+        <h1
+          className="mt-1 text-3xl font-bold"
+          style={{ color: "var(--ink)" }}
+        >
           Calendario
         </h1>
 
-        <p className="mt-2 text-sm text-slate-400">
+        <p
+          className="mt-2 text-sm"
+          style={{ color: "var(--muted)" }}
+        >
           Organiza tus reuniones, citas y próximas actividades comerciales.
         </p>
       </header>
 
       {eventsResult.error && (
-        <div className="mb-5 rounded-lg border border-red-800 bg-red-950/30 px-4 py-3 text-sm text-red-300">
+        <div
+          className="mb-5 rounded-lg border px-4 py-3 text-sm"
+          style={{
+            borderColor: "var(--danger)",
+            backgroundColor: "var(--danger-soft)",
+            color: "var(--danger)",
+          }}
+        >
           No se han podido cargar los eventos del calendario. Comprueba la conexión e inténtalo de nuevo.
         </div>
       )}
